@@ -3,4 +3,4 @@ il existe deux points d'accès API pour accéder et travailler avec les e-mails 
     MS Office API (Deprecating)
     MS Graph API (Recommended)
 
-
+![img.png](img.png)
