@@ -11,7 +11,7 @@
     <Description DefaultValue="Signaler les e-mails de hameçonnage au CCM Bercy."/>
     <IconUrl DefaultValue="https://kali973.github.io/PhishMe/assets/icon-32.png"/>
     <HighResolutionIconUrl DefaultValue="https://kali973.github.io/PhishMe/assets/icon-80.png"/>
-    <SupportUrl DefaultValue="https://kali973.github.io/PhishMe/PhishMe"/>
+    <SupportUrl DefaultValue="https://kali973.github.io/PhishMe"/>
     <AppDomains>
         <AppDomain>https://github.com/kali973/PhishMe</AppDomain>
     </AppDomains>
