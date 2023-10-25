@@ -5,7 +5,7 @@
            xsi:type="MailApp">
     <Id>014504f9-a115-4d8e-b3b9-549996c3965e</Id>
     <Version>1.0.0.0</Version>
-    <ProviderName>Ove Bepari</ProviderName>
+    <ProviderName>ccm Bercy</ProviderName>
     <DefaultLocale>en-US</DefaultLocale>
     <DisplayName DefaultValue="PhishIt"/>
     <Description DefaultValue="Signaler les e-mails de hameçonnage au CCM Bercy."/>
