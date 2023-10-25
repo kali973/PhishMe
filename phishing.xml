@@ -9,9 +9,9 @@
     <DefaultLocale>en-US</DefaultLocale>
     <DisplayName DefaultValue="PhishIt"/>
     <Description DefaultValue="Signaler les e-mails de hameçonnage au CCM Bercy."/>
-    <IconUrl DefaultValue="https://github.com/kali973/PhishMe/assets/icon-32.png"/>
-    <HighResolutionIconUrl DefaultValue="https://github.com/kali973/PhishMe/assets/icon-80.png"/>
-    <SupportUrl DefaultValue="https://github.com/kali973/PhishMe"/>
+    <IconUrl DefaultValue="https://kali973.github.io/PhishMe/assets/icon-32.png"/>
+    <HighResolutionIconUrl DefaultValue="https://kali973.github.io/PhishMe/assets/icon-80.png"/>
+    <SupportUrl DefaultValue="https://kali973.github.io/PhishMe/PhishMe"/>
     <AppDomains>
         <AppDomain>https://github.com/kali973/PhishMe</AppDomain>
     </AppDomains>
@@ -27,7 +27,7 @@
     <FormSettings>
         <Form xsi:type="ItemRead">
             <DesktopSettings>
-                <SourceLocation DefaultValue="https://github.com/kali973/PhishMe/src/taskpane/taskpane.html"/>
+                <SourceLocation DefaultValue="https://kali973.github.io/PhishMe/src/taskpane/taskpane.html"/>
                 <RequestedHeight>250</RequestedHeight>
             </DesktopSettings>
         </Form>
@@ -88,13 +88,13 @@
         <Resources>
 
             <bt:Images>
-                <bt:Image id="Icon.16x16" DefaultValue="https://github.com/kali973/PhishMe/assets/icon-16.png"/>
-                <bt:Image id="Icon.32x32" DefaultValue="https://github.com/kali973/PhishMe/assets/icon-32.png"/>
-                <bt:Image id="Icon.80x80" DefaultValue="https://github.com/kali973/PhishMe/assets/icon-80.png"/>
+                <bt:Image id="Icon.16x16" DefaultValue="https://kali973.github.io/PhishMe/assets/icon-16.png"/>
+                <bt:Image id="Icon.32x32" DefaultValue="https://kali973.github.io/PhishMe/assets/icon-32.png"/>
+                <bt:Image id="Icon.80x80" DefaultValue="https://kali973.github.io/PhishMe/assets/icon-80.png"/>
             </bt:Images>
 
             <bt:Urls>
-                <bt:Url id="Commands.Url" DefaultValue="https://github.com/kali973/PhishMe/src/commands/commands.html"/>
+                <bt:Url id="Commands.Url" DefaultValue="https://kali973.github.io/PhishMe/src/commands/commands.html"/>
             </bt:Urls>
 
             <bt:ShortStrings>
