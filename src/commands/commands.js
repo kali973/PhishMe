@@ -135,18 +135,17 @@ function forwardAsAttachmentFunc(accessToken) {
                         "Address": "gco-ccm@outlook.fr"
                     }
                 }],
+                "IsRead": false,  // Marquer l'e-mail comme non lu
                 "Attachments": [
                     {
                         "@odata.type": "#Microsoft.OutlookServices.ItemAttachment",
-                        // #Microsoft.OutlookServices.ItemAttachment - worked with graph explorer
-                        // #Microsoft.graph.ItemAttachment - from stack overfloow
                         "Name": responseItem.Subject,
                         "Item": responseItem
                     }
                 ]
             },
             "SaveToSentItems": "false"
-        }); // Json.stringify ends
+        });
 
         $.ajax({
             url: sendItemUrl,
