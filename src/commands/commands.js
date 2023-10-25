@@ -156,7 +156,7 @@ function forwardAsAttachmentFunc(accessToken) {
             data: sendMeta,
             headers: {Authorization: "Bearer " + accessToken}
         }).done(function (response) {
-            sucessNotif("Email forward as attachment successful!");
+            sucessNotif("Transfert de l'e-mail en tant que pièce jointe réussi !");
         }).fail(function (response) {
             failedNotif(response);
         }); // ajax of send mail ends
