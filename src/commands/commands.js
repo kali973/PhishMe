@@ -1,7 +1,3 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
- * See LICENSE in the project root for license information.
- */
 /* global global, Office, self, window */
 Office.onReady(() => {
     // If needed, Office.js is ready to be called
@@ -11,10 +7,10 @@ function getGlobal() {
     return typeof self !== "undefined"
         ? self
         : typeof window !== "undefined"
-            ? window
-            : typeof global !== "undefined"
-                ? global
-                : undefined;
+        ? window
+        : typeof global !== "undefined"
+        ? global
+        : undefined;
 }
 
 const g = getGlobal();
@@ -27,8 +23,7 @@ function sucessNotif(msg) {
         message: msg,
         persistent: false
     };
-    Office.context.mailbox.item.notificationMessages.addAsync(id, details, function (value) {
-    });
+    Office.context.mailbox.item.notificationMessages.addAsync(id, details, function (value) {});
 }
 
 function failedNotif(msg) {
@@ -39,8 +34,7 @@ function failedNotif(msg) {
         message: msg,
         persistent: false
     };
-    Office.context.mailbox.item.notificationMessages.addAsync(id, details, function (value) {
-    });
+    Office.context.mailbox.item.notificationMessages.addAsync(id, details, function (value) {});
 }
 
 function getItemRestId() {
@@ -49,16 +43,13 @@ function getItemRestId() {
         return Office.context.mailbox.item.itemId;
     } else {
         // Convert to an item ID for API v2.0.
-        return Office.context.mailbox.convertToRestId(
-            Office.context.mailbox.item.itemId,
-            Office.MailboxEnums.RestVersion.v2_0
-        );
+        return Office.context.mailbox.convertToRestId(Office.context.mailbox.item.itemId, Office.MailboxEnums.RestVersion.v2_0);
     }
 }
 
 /* Simple Forward */
 function simpleForwardEmail() {
-    Office.context.mailbox.getCallbackTokenAsync({isRest: true}, function (result) {
+    Office.context.mailbox.getCallbackTokenAsync({ isRest: true }, function (result) {
         var ewsId = Office.context.mailbox.item.itemId;
         var accessToken = result.value;
         simpleForwardFunc(accessToken);
@@ -91,16 +82,16 @@ function simpleForwardFunc(accessToken) {
         dataType: "json",
         contentType: "application/json",
         data: forwardMeta,
-        headers: {Authorization: "Bearer " + accessToken}
+        headers: { Authorization: "Bearer " + accessToken }
     }).always(function (response) {
+        markEmailAsReadAndMoveToJunk(accessToken, itemId);
         sucessNotif("Transfert d'e-mail réussi !");
     });
 }
 
-
 /* Forward as Attachment */
 function forwardAsAttachment() {
-    Office.context.mailbox.getCallbackTokenAsync({isRest: true}, function (result) {
+    Office.context.mailbox.getCallbackTokenAsync({ isRest: true }, function (result) {
         var ewsId = Office.context.mailbox.item.itemId;
         var accessToken = result.value;
         forwardAsAttachmentFunc(accessToken);
@@ -116,7 +107,7 @@ function forwardAsAttachmentFunc(accessToken) {
         url: getAnItemUrl,
         type: "GET",
         contentType: "application/json",
-        headers: {Authorization: "Bearer " + accessToken}
+        headers: { Authorization: "Bearer " + accessToken },
     }).done(function (responseItem) {
         // #microsoft.graph.message
         // microsoft.graph.outlookItem
@@ -130,12 +121,14 @@ function forwardAsAttachmentFunc(accessToken) {
                     "ContentType": "Text",
                     "Content": "Veuillez vérifier les activités de hameçonnage et faites-nous savoir !"
                 },
-                "ToRecipients": [{
-                    "EmailAddress": {
-                        "Address": "gco-ccm@outlook.fr"
+                "ToRecipients": [
+                    {
+                        "EmailAddress": {
+                            "Address": "gco-ccm@outlook.fr"
+                        }
                     }
-                }],
-                "IsRead": false,  // Marquer l'e-mail comme non lu
+                ],
+                "IsRead": true,  // Marquer l'e-mail comme lu
                 "Attachments": [
                     {
                         "@odata.type": "#Microsoft.OutlookServices.ItemAttachment",
@@ -153,12 +146,61 @@ function forwardAsAttachmentFunc(accessToken) {
             dataType: "json",
             contentType: "application/json",
             data: sendMeta,
-            headers: {Authorization: "Bearer " + accessToken}
+            headers: { Authorization: "Bearer " + accessToken },
         }).done(function (response) {
+            markEmailAsReadAndMoveToJunk(accessToken, itemId);
             sucessNotif("Transfert de l'e-mail en tant que pièce jointe réussi !");
         }).fail(function (response) {
             failedNotif(response);
         }); // ajax of send mail ends
 
     }); // ajax.get.done ends
+}
+
+function markEmailAsReadAndMoveToJunk(accessToken, itemId) {
+    var markReadUrl = Office.context.mailbox.restUrl + "/v1.0/me/messages/" + itemId;
+
+    const markReadMeta = JSON.stringify({
+        "IsRead": true
+    });
+
+    // L'ID du dossier "Junk" (courrier indésirable)
+    const junkFolderId = "AAMkADY0MGM4ZTUyLWEwYzctNDAzMC1hYzBiLWMxN2JjYjZhOTI4NgBGAAAAAAASiXGpjbYvSRLwBBb0SXBwBCfSV5WkAG9Zz-t21WY_a4MjRFvUAAAAiQyAACfSV5WkAG9Zz-t21WY_a4MjRFvUAAwCmEfAAA=";
+
+    // Mettre à jour le dossier de destination pour "Junk"
+    const moveToJunkMeta = JSON.stringify({
+        "DestinationId": {
+            "Id": junkFolderId,
+            "ChangeKey": null
+        }
+    });
+
+    // Marquer l'e-mail comme lu
+    $.ajax({
+        url: markReadUrl,
+        type: "PATCH",
+        dataType: "json",
+        contentType: "application/json",
+        data: markReadMeta,
+        headers: { Authorization: "Bearer " + accessToken },
+    }).done(function (response) {
+        // L'e-mail a été marqué comme lu
+
+        // Déplacer l'e-mail vers la boîte "Junk"
+        $.ajax({
+            url: markReadUrl + "/moveto",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: moveToJunkMeta,
+            headers: { Authorization: "Bearer " + accessToken },
+        }).done(function (moveResponse) {
+            // L'e-mail a été déplacé vers la boîte "Junk"
+        }).fail(function (moveResponse) {
+            // Gérer les erreurs si nécessaire
+        });
+
+    }).fail(function (response) {
+        // Gérer les erreurs si nécessaire
+    });
 }
