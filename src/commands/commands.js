@@ -37,6 +37,7 @@ function failedNotif(msg) {
     Office.context.mailbox.item.notificationMessages.addAsync(id, details, function (value) {});
 }
 
+
 function getItemRestId() {
     if (Office.context.mailbox.diagnostics.hostName === "OutlookIOS") {
         // itemId is already REST-formatted.
