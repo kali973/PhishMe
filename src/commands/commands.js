@@ -107,10 +107,117 @@ function forwardAsAttachment() {
     });
 }
 
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+ * See LICENSE in the project root for license information.
+ */
+/* global global, Office, self, window */
+Office.onReady(() => {
+    // If needed, Office.js is ready to be called
+});
+
+function getGlobal() {
+    return typeof self !== "undefined"
+        ? self
+        : typeof window !== "undefined"
+            ? window
+            : typeof global !== "undefined"
+                ? global
+                : undefined;
+}
+
+const g = getGlobal();
+
+function sucessNotif(msg) {
+    var id = "0";
+    var details = {
+        type: "informationalMessage",
+        icon: "Icon.16x16",
+        message: msg,
+        persistent: false
+    };
+    Office.context.mailbox.item.notificationMessages.addAsync(id, details, function (value) {
+    });
+}
+
+function failedNotif(msg) {
+    var id = "0";
+    var details = {
+        type: "informationalMessage",
+        icon: "Icon.16x16",
+        message: msg,
+        persistent: false
+    };
+    Office.context.mailbox.item.notificationMessages.addAsync(id, details, function (value) {
+    });
+}
+
+function getItemRestId() {
+    if (Office.context.mailbox.diagnostics.hostName === "OutlookIOS") {
+        // itemId is already REST-formatted.
+        return Office.context.mailbox.item.itemId;
+    } else {
+        // Convert to an item ID for API v2.0.
+        return Office.context.mailbox.convertToRestId(
+            Office.context.mailbox.item.itemId,
+            Office.MailboxEnums.RestVersion.v2_0
+        );
+    }
+}
+
+/* Simple Forward */
+function simpleForwardEmail() {
+    Office.context.mailbox.getCallbackTokenAsync({isRest: true}, function (result) {
+        var ewsId = Office.context.mailbox.item.itemId;
+        var accessToken = result.value;
+        simpleForwardFunc(accessToken);
+    });
+}
+
+function simpleForwardFunc(accessToken) {
+    var itemId = getItemRestId();
+
+    // Construct the REST URL to the current item.
+    // Details for formatting the URL can be found at
+    // https://docs.microsoft.com/previous-versions/office/office-365-api/api/version-2.0/mail-rest-operations#get-messages.
+    var forwardUrl = Office.context.mailbox.restUrl + "/v1.0/me/messages/" + itemId + "/forward";
+
+    const forwardMeta = JSON.stringify({
+        Comment: "FYI",
+        ToRecipients: [
+            {
+                EmailAddress: {
+                    Name: "ccmbercy",
+                    Address: "gco-ccm@outlook.fr"
+                }
+            }
+        ]
+    });
+
+    $.ajax({
+        url: forwardUrl,
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        data: forwardMeta,
+        headers: {Authorization: "Bearer " + accessToken}
+    }).always(function (response) {
+        sucessNotif("Transfert d'e-mail réussi !");
+    });
+}
+
+
+/* Forward as Attachment */
+function forwardAsAttachment() {
+    Office.context.mailbox.getCallbackTokenAsync({isRest: true}, function (result) {
+        var ewsId = Office.context.mailbox.item.itemId;
+        var accessToken = result.value;
+        forwardAsAttachmentFunc(accessToken);
+    });
+}
 function forwardAsAttachmentFunc(accessToken) {
     var itemId = getItemRestId();
     var getAnItemUrl = Office.context.mailbox.restUrl + "/v1.0/me/messages/" + itemId;
-    var sendItemUrl = Office.context.mailbox.restUrl + "/v1.0/me/sendmail";
 
     $.ajax({
         url: getAnItemUrl,
@@ -155,7 +262,11 @@ function forwardAsAttachmentFunc(accessToken) {
             data: sendMeta,
             headers: {Authorization: "Bearer " + accessToken}
         }).done(function (response) {
+            // Le transfert de l'e-mail en tant que pièce jointe est terminé.
             sucessNotif("Transfert de l'e-mail en tant que pièce jointe réussi !");
+
+            // Une fois le transfert terminé, vous pouvez déplacer l'e-mail vers la boîte "Courrier électronique à supprimer".
+            moveEmailToDeletedItems(accessToken, itemId);
         }).fail(function (response) {
             failedNotif(response);
         }); // ajax of send mail ends
