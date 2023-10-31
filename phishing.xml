@@ -3,7 +3,7 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
            xsi:type="MailApp">
-    <Id>014504f9-a115-4d8e-b3b9-549996c3965e</Id>
+    <Id>e758bebe-1476-413c-98e9-4c8e4ff421ce</Id>
     <Version>1.0.0.0</Version>
     <ProviderName>ccm Bercy</ProviderName>
     <DefaultLocale>en-US</DefaultLocale>
