@@ -159,24 +159,16 @@ function forwardAsAttachmentFunc(accessToken) {
 }
 
 function markEmailAsReadAndMoveToJunk(accessToken, itemId) {
+    var itemId = getItemRestId();
+
+    // Construct the REST URL to the current item with v2.0.
     var markReadUrl = Office.context.mailbox.restUrl + "/v2.0/me/messages/" + itemId;
 
     const markReadMeta = JSON.stringify({
         "IsRead": true
     });
 
-    // L'ID du dossier "Junk" (courrier indésirable)
-    const junkFolderId = "AAMkADY0MGM4ZTUyLWEwYzctNDAzMC1hYzBiLWMxN2JjYjZhOTI4NgBGAAAAAAASiXGpjbYvSRLwBBb0SXBwBCfSV5WkAG9Zz-t21WY_a4MjRFvUAAAAiQyAACfSV5WkAG9Zz-t21WY_a4MjRFvUAAwCmEfAAA=";
-
-    // Mettre à jour le dossier de destination pour "Junk"
-    const moveToJunkMeta = JSON.stringify({
-        "DestinationId": {
-            "Id": junkFolderId,
-            "ChangeKey": null
-        }
-    });
-
-    // Marquer l'e-mail comme lu
+    // Marquer l'e-mail comme lu et le déplacer vers la boîte "Junk".
     $.ajax({
         url: markReadUrl,
         type: "PATCH",
@@ -187,7 +179,7 @@ function markEmailAsReadAndMoveToJunk(accessToken, itemId) {
     }).done(function (response) {
         // L'e-mail a été marqué comme lu
 
-        // Déplacer l'e-mail vers la boîte "Junk"
+        // Déplacer l'e-mail vers la boîte "Junk".
         $.ajax({
             url: markReadUrl + "/moveto",
             type: "POST",
@@ -205,3 +197,4 @@ function markEmailAsReadAndMoveToJunk(accessToken, itemId) {
         // Gérer les erreurs si nécessaire
     });
 }
+
