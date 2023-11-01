@@ -189,12 +189,16 @@ function markEmailAsReadAndMoveToJunk(accessToken, itemId) {
             headers: { Authorization: "Bearer " + accessToken },
         }).done(function (moveResponse) {
             // L'e-mail a été déplacé vers la boîte "Junk"
+            sucessNotif("E-mail marqué comme lu et déplacé vers la boîte 'Junk'");
         }).fail(function (moveResponse) {
             // Gérer les erreurs si nécessaire
+            failedNotif("Erreur lors du déplacement de l'e-mail vers la boîte 'Junk'");
         });
 
     }).fail(function (response) {
         // Gérer les erreurs si nécessaire
+        failedNotif("Erreur lors de la marque de l'e-mail comme lu");
     });
 }
+
 
