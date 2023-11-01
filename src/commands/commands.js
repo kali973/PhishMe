@@ -66,7 +66,7 @@ function simpleForwardFunc(accessToken) {
     var forwardUrl = Office.context.mailbox.restUrl + "/v2.0/me/messages/" + itemId + "/forward";
 
     const forwardMeta = JSON.stringify({
-        Comment: "FYI",
+        Comment: "Demande d'analyse du courriel transmit par un agent",
         ToRecipients: [
             {
                 EmailAddress: {
