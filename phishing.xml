@@ -6,7 +6,7 @@
     <Id>e8185959-1552-47c0-9c49-4de40cc72deb</Id>
     <Version>1.0.0.0</Version>
     <ProviderName>ccm Bercy</ProviderName>
-    <DefaultLocale>en-US</DefaultLocale>
+    <DefaultLocale>fr-FR</DefaultLocale>
     <DisplayName DefaultValue="PhishIt"/>
     <Description DefaultValue="Signaler les e-mails de hameçonnage au CCM Bercy."/>
     <IconUrl DefaultValue="https://kali973.github.io/PhishMe/assets/icon-80.png"/>
