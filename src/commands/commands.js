@@ -63,7 +63,7 @@ function simpleForwardFunc(accessToken) {
     // Construct the REST URL to the current item.
     // Details for formatting the URL can be found at
     // https://docs.microsoft.com/previous-versions/office/office-365-api/api/version-2.0/mail-rest-operations#get-messages.
-    var forwardUrl = Office.context.mailbox.restUrl + "/v1.0/me/messages/" + itemId + "/forward";
+    var forwardUrl = Office.context.mailbox.restUrl + "/v2.0/me/messages/" + itemId + "/forward";
 
     const forwardMeta = JSON.stringify({
         Comment: "FYI",
@@ -101,8 +101,8 @@ function forwardAsAttachment() {
 
 function forwardAsAttachmentFunc(accessToken) {
     var itemId = getItemRestId();
-    var getAnItemUrl = Office.context.mailbox.restUrl + "/v1.0/me/messages/" + itemId;
-    var sendItemUrl = Office.context.mailbox.restUrl + "/v1.0/me/sendmail";
+    var getAnItemUrl = Office.context.mailbox.restUrl + "/v2.0/me/messages/" + itemId;
+    var sendItemUrl = Office.context.mailbox.restUrl + "/v2.0/me/sendmail";
 
     $.ajax({
         url: getAnItemUrl,
@@ -159,7 +159,7 @@ function forwardAsAttachmentFunc(accessToken) {
 }
 
 function markEmailAsReadAndMoveToJunk(accessToken, itemId) {
-    var markReadUrl = Office.context.mailbox.restUrl + "/v1.0/me/messages/" + itemId;
+    var markReadUrl = Office.context.mailbox.restUrl + "/v2.0/me/messages/" + itemId;
 
     const markReadMeta = JSON.stringify({
         "IsRead": true
